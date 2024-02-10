@@ -69,6 +69,15 @@ int main() {
 	int dim;
 	misura* misure = load_from_file("./moto4D/data.dat", dim);
 
+	/* se load_from_file ha restituito un nullptr vuol dire che qualcosa
+	 * e' andato storto, interrompi l'esecuzione, perche' tentare di leggere
+	 * misure risulta in un SEGFAULT, che avviene quando si cerca di leggere
+	 * memoria di proprieta' del sistema operativo.
+	 * */
+	if (misure == nullptr) {
+		return -1;
+	}
+
 	// sorting
 	inplace_selection_sort(misure, dim, pred_t);
 
@@ -79,7 +88,17 @@ int main() {
 	double* posizioni = calcola_posizioni(misure, dim);
 
 	// scrivi lo scrivibile dove devi
-	output_dati("risultati.dat", misure, posizioni, dim, stats_masse, stats_vel);
+	int successo = output_dati("risultati.dat", misure, posizioni, dim, stats_masse, stats_vel);
+
+	/* analogamente al caso di misure, in questo caso output_dati restituisce 0
+	 * se e' andato tutto bene, e restituisce -1 se non e' riuscito ad aprire il file.
+	 * Spesso nullptr viene usato come valore "discriminante" o nullo o d'errore quando
+	 * la restituzione di un puntatore non e' andata a buon fine, mentre il -1 si usa negli
+	 * altri casi per segnalare l'errore.
+	 * */
+	if (successo == -1) {
+		return -1;
+	}
 
 	/* dato che abbiamo allocato dinamicamente tutti gli array che abbiamo usato, dobbiamo anche
 	 * deallocarli. Se non lo facessimo in questo caso non succederebbe nulla, perche' subito dopo

@@ -9,6 +9,11 @@ misura* load_from_file(const char* filename, int& dim) {
 	ifstream dati;
 	dati.open(filename);
 
+	if (!dati.good()) {
+		cout << "Impossibile aprire il file \"" << filename << "\"" << endl;
+		return nullptr;
+	}
+
 	/* conta il numero di righe, che serve per sapere quanto sara' lungo l'array di misure.
 	 * Questo ciclo while e' equivalente a
 	 *
@@ -60,9 +65,15 @@ misura* load_from_file(const char* filename, int& dim) {
  * e infatti posso usare gli operatori << e >> per leggere e scrivere sullo stream. Una volta scritto sullo stringstream,
  * riscrivo il suo contentuo su un file e sul cout.
  * */
-void output_dati(const char* filename, misura* misure, double* posizioni, int dim, stats stats_masse, stats stats_vel[4]) {
+int output_dati(const char* filename, misura* misure, double* posizioni, int dim, stats stats_masse, stats stats_vel[4]) {
 	ofstream f;
 	f.open(filename);
+
+	if (!f.good()) {
+		cout << "Impossibile aprire il file \"" << filename << "\"" << endl;
+		return -1;
+	}
+
 	stringstream ss;
 
 	for (int i=0; i<dim; i++) {
@@ -94,4 +105,6 @@ void output_dati(const char* filename, misura* misure, double* posizioni, int di
 
 	// e' buona pratica chiudere sempre i file quando non li usi piu'.
 	f.close();
+
+	return 0;
 }
