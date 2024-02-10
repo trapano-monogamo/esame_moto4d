@@ -76,12 +76,12 @@ int main() {
 
 	// calcola tutto il calcolabile
 	calcola_masse(misure, dim);
-	stats stats_misure = calcola_stat_masse(misure, dim);
+	stats stats_masse = calcola_stat_masse(misure, dim);
 	stats* stats_vel = calcola_stat_velocita(misure, dim);
 	double* posizioni = calcola_posizioni(misure, dim);
 
 	// scrivi lo scrivibile dove devi
-	output_dati("risultati.dat", misure, stats_misure, posizioni, dim);
+	output_dati("risultati.dat", misure, posizioni, dim, stats_masse, stats_vel);
 
 	/* dato che abbiamo allocato dinamicamente tutti gli array che abbiamo usato, dobbiamo anche
 	 * deallocarli. Se non lo facessimo in questo caso non succederebbe nulla, perche' subito dopo

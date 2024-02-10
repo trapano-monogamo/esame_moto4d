@@ -42,32 +42,23 @@ stats* calcola_stat_velocita(misura* misure, int dim) {
 	// stesso ragionamento di prima, ma questa volta una quantita' per ogni coordinata
 	double m_acc[4]{ };
 	double ds_acc[4]{ };
-	double max[4]{ };
-	double min[4]{ };
+	double v_max[4] = { misure[0].v[0], misure[0].v[1], misure[0].v[2], misure[0].v[3] };
+	double v_min[4] = { misure[0].v[0], misure[0].v[1], misure[0].v[2], misure[0].v[3] };
 
 	for (int i=0; i<dim; i++) {
-		m_acc[0] += misure[i].v[0];
-		m_acc[1] += misure[i].v[1];
-		m_acc[2] += misure[i].v[2];
-		m_acc[3] += misure[i].v[3];
+		for (int k=0; k<4; k++) {
+			m_acc[k] += misure[i].v[k];
 
-		if (misure[i].v[0] >= max[0]) max[0] = misure[i].v[0];
-		if (misure[i].v[1] >= max[1]) max[1] = misure[i].v[1];
-		if (misure[i].v[2] >= max[2]) max[2] = misure[i].v[2];
-		if (misure[i].v[3] >= max[3]) max[3] = misure[i].v[3];
-
-		if (misure[i].v[0] <= min[0]) min[0] = misure[i].v[0];
-		if (misure[i].v[1] <= min[1]) min[1] = misure[i].v[1];
-		if (misure[i].v[2] <= min[2]) min[2] = misure[i].v[2];
-		if (misure[i].v[3] <= min[3]) min[3] = misure[i].v[3];
+			if (misure[i].v[k] >= v_max[k]) v_max[k] = misure[i].v[k];
+			if (misure[i].v[k] <= v_min[k]) v_min[k] = misure[i].v[k];
+		}
 	}
 	double media[4] = { m_acc[0]/dim, m_acc[1]/dim, m_acc[2]/dim, m_acc[3]/dim };
 
 	for (int i=0; i<dim; i++) {
-		ds_acc[0] += pow(misure[i].v[0] - media[0], 2);
-		ds_acc[1] += pow(misure[i].v[1] - media[1], 2);
-		ds_acc[2] += pow(misure[i].v[2] - media[2], 2);
-		ds_acc[3] += pow(misure[i].v[3] - media[3], 2);
+		for (int k=0; k<4; k++) {
+			ds_acc[k] += pow(misure[i].v[k] - media[k], 2);
+		}
 	}
 	double devstd[4] = { sqrt(ds_acc[0] / (dim + 1)), sqrt(ds_acc[1] / (dim + 1)), sqrt(ds_acc[2] / (dim + 1)), sqrt(ds_acc[3] / (dim + 1)) };
 
@@ -88,12 +79,11 @@ stats* calcola_stat_velocita(misura* misure, int dim) {
 	 *
 	 * anche restituire gli array allocati dinamicamente con i dati caricati dai file e' una brutta idea.
 	 * */
-	stats* s = new stats[4]{
-		(stats){ media[0], devstd[0], max[0], min[0] },
-		(stats){ media[1], devstd[1], max[1], min[1] },
-		(stats){ media[2], devstd[2], max[2], min[2] },
-		(stats){ media[3], devstd[3], max[3], min[3] }
-	};
+	stats* s = new stats[4];
+	for (int i=0; i<4; i++) {
+		s[i] = (stats){ media[i], devstd[i], v_max[i], v_min[i] };
+	}
+
 	return s;
 }
 

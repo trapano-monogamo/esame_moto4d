@@ -60,7 +60,7 @@ misura* load_from_file(const char* filename, int& dim) {
  * e infatti posso usare gli operatori << e >> per leggere e scrivere sullo stream. Una volta scritto sullo stringstream,
  * riscrivo il suo contentuo su un file e sul cout.
  * */
-void output_dati(const char* filename, misura* misure, stats stats_misure, double* posizioni, int dim) {
+void output_dati(const char* filename, misura* misure, double* posizioni, int dim, stats stats_masse, stats stats_vel[4]) {
 	ofstream f;
 	f.open(filename);
 	stringstream ss;
@@ -73,7 +73,14 @@ void output_dati(const char* filename, misura* misure, stats stats_misure, doubl
 			<< posizioni[4*i + 0] << "," << posizioni[4*i + 1] << "," << posizioni[4*i + 2] << "," << posizioni[4*i + 3] << "}, "
 			<< endl << endl;
 	}
-	ss << "media: " << stats_misure.media << endl << "sigma: " << stats_misure.devstd << endl;
+	ss << "media masse: " << stats_masse.media << endl << "sigma masse: " << stats_masse.devstd << endl << endl;
+	for (int i=0; i<4; i++) {
+		ss << "velocita': componente " << i << endl
+			<< "media velocita': " << stats_vel[0].media << endl
+			<< "sigma velocita': " << stats_vel[1].devstd << endl
+			<< "max velocita': " << stats_vel[2].max << endl
+			<< "min velocita': " << stats_vel[3].min << endl << endl;;
+	}
 
 	/* non preoccuparti troppo neanche di questo loop. E' a meta' tra un ciclo while e un ciclo for e
 	 * si usa con gli iteratori (std::vector, std::stringstream, std::string, std::array, std::unordered_map, ...),
