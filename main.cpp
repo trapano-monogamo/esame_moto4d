@@ -16,8 +16,6 @@
 #include "lettura.hpp"
 #include "calcoli.hpp"
 
-using namespace std;
-
 
 /* questa e' la funzione che mi sono scritto da portare all'esame. But fear not,
  * for I am by your side in your quest to immaculate data analysis programming.

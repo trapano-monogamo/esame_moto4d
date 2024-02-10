@@ -76,10 +76,10 @@ void output_dati(const char* filename, misura* misure, double* posizioni, int di
 	ss << "media masse: " << stats_masse.media << endl << "sigma masse: " << stats_masse.devstd << endl << endl;
 	for (int i=0; i<4; i++) {
 		ss << "velocita': componente " << i << endl
-			<< "media velocita': " << stats_vel[0].media << endl
-			<< "sigma velocita': " << stats_vel[1].devstd << endl
-			<< "max velocita': " << stats_vel[2].max << endl
-			<< "min velocita': " << stats_vel[3].min << endl << endl;;
+			<< "media velocita': " << stats_vel[i].media << endl
+			<< "sigma velocita': " << stats_vel[i].devstd << endl
+			<< "max velocita': " << stats_vel[i].max << endl
+			<< "min velocita': " << stats_vel[i].min << endl << endl;;
 	}
 
 	/* non preoccuparti troppo neanche di questo loop. E' a meta' tra un ciclo while e un ciclo for e
